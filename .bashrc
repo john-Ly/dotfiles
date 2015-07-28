@@ -119,9 +119,8 @@ fi
 if [[ $COLORTERM == gnome-terminal && $TERM != screen* ]]; then
    export TERM=xterm-256color
 fi  
-source /opt/ros/indigo/setup.bash
 
-export PATH=$PATH:/home/john/google_appengine
+export PATH=$PATH:/home/jekor/google_appengine
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -129,13 +128,22 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # android  SDK && NDK
-export PATH=/home/john/Android/Sdk/platform-tools:$PATH
-export PATH=/home/john/Android/Sdk/tools:$PATH
+export PATH=/home/jekor/Android/sdk/platform-tools:$PATH
+export PATH=/home/jekor/Android/sdk/tools:$PATH
 
-export ANDROID_NDK=/home/john/Android/android-ndk-r10e
-export PATH=/home/john/Android/android-ndk-r10e:$PATH
+export ANDROID_NDK=/home/jekor/Android/android-ndk-r10e
+export PATH=/home/jekor/Android/android-ndk-r10e:$PATH
+
+#emacs
+alias emacs='emacs -nw'
 
 # opencv
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export PKG_CONFIG_PATH
-source ~/catkin_ws/devel/setup.bash
+
+# PATH--ros
+source ~/ros_ws/devel/setup.bash
+source /opt/ros/indigo/setup.bash
+
+# PATH-- JAVA
+export JAVA_HOME=/usr/lib/jvm/java-7-oracle
