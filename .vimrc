@@ -273,13 +273,14 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'tpope/vim-rails.git'
 Bundle 'bling/vim-airline'
 Bundle 'Valloric/YouCompleteMe'
-"Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
-Bundle 'taglist.vim'
+"Bundle 'taglist.vim'
 Bundle 'ctags.vim'
 "Bundle "davidhalter/jedi"
 "Bundle 'mark.vim'
 Bundle "mattn/emmet-vim"
+"Bundle "othree/xml.vim"
 "Bundle 'tpope/vim-surround'
 "Bundle 'terryma/vim-multiple-cursors'
 "Bundle 'tpope/vim-repeat'
