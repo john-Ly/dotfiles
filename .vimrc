@@ -3,15 +3,24 @@
 " 2 vimrc不能直接使用----ycm需要编译才可以使用，在安装syntactic
 " 3 需要不断维护更新
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General
+" 第三次更新：2015-08-04 
+" 主要插件学习 文件工程学习
+" 折叠功能的实验 快捷键为 ，zz
+" undo && redo ---- shortcut: u cltr+R
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 修改leader键
+let mapleader = ','
+let g:mapleader = ','
 if v:progname =~? "evim"
 finish
 endif
+if has('mouse')
+set mouse=a
+endif
 set nocompatible
 set backspace=eol,start,indent
-set nowrap
-set whichwrap+=<,>,h,l
 syntax enable
 syntax on
 set number
@@ -22,28 +31,40 @@ set showmode
 set scrolloff=5
 set novisualbell
 set laststatus=2
-autocmd FileType text setlocal textwidth=78
+autocmd FileType text setlocal textwidth=80
 set magic
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")} " 我的状态行显示的内容（包括文件类型和解码）
 
-"中文乱码解决
+" 现在使用主题为zenburn 
+" molokai
+"colorscheme molokai
+"let g:molokai_original = 1
+" solarized
+"set background=dark
+"colorscheme solarized
+set cursorcolumn
+set cursorline
+"desert
+set t_Co=256
+colorscheme zenburn
+
+" 取消换行。
+set nowrap
+"set whichwrap+=<,>,[,]
+
+" 文件编码
 set ffs=unix,dos,mac
 let &termencoding=&encoding
 set fileencodings=utf-8,gbk,ucs-bom,cp936
 set encoding=utf-8 " 设置新文件的编码为 UTF-8
-"代码折叠
-set foldenable
-set foldmethod=syntax
-set foldlevel=99
-"manual--手工折叠 || indent--缩进表示折叠 || expr 表达式定义折叠
-"syntax 语法定义折叠 || diff 对没有更改的文本进行折叠
-"marker 使用标记进行折叠, 默认标记是 {{{ 和 }}}
-"自动补全配置
-" set completeopt=longest,menu
+
+" 自动补全配置
+"set completeopt=longest,menu
 " " 增强模式中的命令行自动完成操作
 " set wildmenu
 " " Ignore compiled files
-" set wildignore=*.o,*~,*.pyc,*.class
+" set wildignore=*.o,*~,*.pyc,*.class,*.swp,*.bak,*.pyc,.svn
+
 "搜索和匹配
 set showmatch "高亮显示匹配的括号
 set matchtime=5 "匹配括号高亮的时间（单位是十分之一秒）
@@ -53,6 +74,7 @@ set incsearch " 在搜索时，输入的词句的逐字符高亮（类似firefox
 set smartcase "ignore case if search pattern is all lowercase, case-sensitive otherwise " 有一个或以上大写字母时仍大小写敏感
 set listchars=tab:\|\ ,trail:.,extends:>,precedes:<,eol:$ " 输入:set list命令是应该显示些啥？
 "set ignorecase "在搜索的时候忽略大小写
+
 "文件类型
 filetype on "侦测文件类型
 filetype plugin on "载入文件类型插件
@@ -60,6 +82,7 @@ filetype indent on "为特定文件类型载入相关缩进文件
 filetype plugin indent on
 set confirm "在处理为保存或只读文件时，弹出确认
 set autoread "文件修改之后自动载入
+
 "tab相关变更
 set tabstop=4 " 设置Tab键的宽度 [等同的空格个数]
 set shiftwidth=4 " 每一次缩进对应的空格数
@@ -68,17 +91,49 @@ set smarttab " insert tabs on the start of a line according to shiftwidth, not t
 set expandtab " 将Tab自动转化成空格 [需要输入真正的Tab键时，使用 Ctrl+V + Tab]
 set shiftround " 缩进时，取整 use multiple of shiftwidth when indenting with '<' and '>'
 "set noexpandtab " 不要用空格代替制表符
-if has('mouse')
-set mouse=a
-endif
+
+"代码折叠
+set foldenable
+set foldmethod=indent
+set foldlevel=99
+"manual--手工折叠 || indent--缩进表示折叠 || expr 表达式定义折叠
+"syntax 语法定义折叠 || diff 对没有更改的文本进行折叠
+"marker 使用标记进行折叠, 默认标记是 {{{ 和 }}}
+" 代码折叠自定义快捷键
+let g:FoldMethod = 0
+map <leader>zz :call ToggleFold()<cr>
+fun! ToggleFold()
+    if g:FoldMethod == 0
+        exe "normal! zM"
+        let g:FoldMethod = 1
+    else
+        exe "normal! zR"
+        let g:FoldMethod = 0
+    endif
+endfun
+
 "缩进配置
 set autoindent "继承前一行的缩进方式，特别适用于多行注释
 set smartindent "为C程序提供自动缩进
 set cindent " 使用C样式的缩进
+
+"create undo file
+if has('persistent_undo')
+  set undolevels=1000         " How many undos
+  set undoreload=10000        " number of lines to save for undo
+  set undofile                " So is persistent undo ...
+  set undodir=/tmp/vimundo/
+endif
+
+" 备份,到另一个位置. 防止误删, 目前是取消备份
+"set backup
+"set backupext=.bak
+"set backupdir=/tmp/vimbk/
 " 不要生成swap文件，当buffer被丢弃的时候隐藏它
 setlocal noswapfile
 set nobackup " 取消备份
 set bufhidden=hide
+
 "去掉输入错误的提示声音
 set noerrorbells
 set novisualbell
@@ -89,6 +144,11 @@ set lazyredraw
 "自动格式化
 "set formatoptions=tcrqn
 set fillchars=vert:\ ,stl:\ ,stlnc:\ " 在被分割的窗口间显示空白，便于阅读
+
+"设置 退出vim后，内容显示在终端屏幕, 可以用于查看和复制
+"好处：误删什么的，如果以前屏幕打开，可以找回
+"set t_ti= t_te=
+
 "设置session
 set sessionoptions-=curdir
 set sessionoptions+=sesdir
@@ -118,8 +178,8 @@ functio! SetTitle()
 	else 
 		call setline(1, "/*************************************************************************") 
 		call append(line("."), "	> File Name: ".expand("%")) 
-		call append(line(".")+1, "	> Author: ") 
-		call append(line(".")+2, "	> Mail: ") 
+		call append(line(".")+1, "	> Author: jekor") 
+		call append(line(".")+2, "	> Mail: hike2048 AT 163 DOT com") 
 		call append(line(".")+3, "	> Created Time: ".strftime("%c")) 
 		call append(line(".")+4, " ************************************************************************/") 
 		call append(line(".")+5, "")
@@ -149,6 +209,7 @@ autocmd BufNewFile * normal G
 " Python 文件的一般设置，比如不要 tab 等
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+expandtab ai
 
 " 保存python文件时删除多余空格
 "fun! <SID>StripTrailingWhitespaces()
@@ -174,7 +235,7 @@ command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
 \ | wincmd p | diffthis
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 热键设置==> F1 - F6 设置 || vimrc || <C-n>
+" shortcut ==> F1 - F6 设置 || vimrc || <C-n> || wrap ,zz
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "F1 废弃,防止调出系统帮助
 "F2 行号开关，用于鼠标复制代码用
@@ -182,6 +243,7 @@ endif
 "F4 换行开关
 "F5 粘贴模式paste_mode开关,用于有格式的代码粘贴
 "F6 语法开关，关闭语法可以加快大文件的展示
+"F7 C，C++, shell, python, javascript, ruby... 
 inoremap <C-U> <C-G>u<C-U>
 noremap <F1> <Esc>
 function! HideNumber()
@@ -217,8 +279,11 @@ map <silent> <leader>ee :e ~/.vimrc<cr>
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " 命令行模式增强，ctrl - a到行首， -e 到行尾
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
+"cnoremap <C-a> <Home>
+"cnoremap <C-e> <End>
+ 
+" remap U to <C-r> for easier redo
+"nnoremap U <C-r>
 
 "C，C++, shell, python, javascript, ruby...等按F7运行
 map <F7> :call CompileRun()<CR>
@@ -275,40 +340,28 @@ Bundle 'bling/vim-airline'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
-"Bundle 'taglist.vim'
+Bundle 'taglist.vim'
 Bundle 'ctags.vim'
 "Bundle "davidhalter/jedi"
 "Bundle 'mark.vim'
 Bundle "mattn/emmet-vim"
-"Bundle "othree/xml.vim"
-"Bundle 'tpope/vim-surround'
-"Bundle 'terryma/vim-multiple-cursors'
-"Bundle 'tpope/vim-repeat'
-"Bundle 'docunext/closetag.vim'
-"let g:closetag_html_style=1
+Bundle 'docunext/closetag.vim'    " 自动补全html/xml标签
+let g:closetag_html_style=1
 Bundle 'scrooloose/nerdcommenter'
 let g:NERDSpaceDelims=1
-Bundle 'kevinw/pyflakes-vim'
-let g:pyflakes_use_quickfix = 0
+Bundle 'kevinw/pyflakes-vim'     " 弥补syntastic只能打开和保存才检查语法的不足
+let g:pyflakes_use_quickfix = 0 
+Bundle 'hdima/python-syntax'     " for python.vim syntax highlight
+" :Python2Syntax   or  :Python3Syntax(default)
+let python_highlight_all = 1
 "c) 指定非Github的Git仓库的插件，需要使用git地址
 Bundle 'git://git.wincent.com/command-t.git'
 "d) 指定本地Git仓库中的插件
 "Bundle 'file:///Users/gmarik/path/to/plugin'
 filetype plugin indent on " required!
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"主题 molokai
-"colorscheme molokai
-"let g:molokai_original = 1
-"主题 solarized
-"set background=dark
-"colorscheme solarized
-set cursorcolumn
-set cursorline
-"desert
-set t_Co=256
-colorscheme zenburn
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "==>syntastic
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_loc_list_height = 3
@@ -325,20 +378,21 @@ let g:syntastic_warning_symbol='⚠'
 "let g:syntastic_warning_symbol = '>!'
 "whether to show balloons
 let g:syntastic_enable_balloons = 1
-let g:syntastic_enable_highlighting = 0
+let g:syntastic_enable_highlighting = 1
 let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
 let g:syntastic_python_checkers=['pyflakes'] " 使用pyflakes,速度比pylint快
 let g:syntastic_javascript_checkers = ['jsl', 'jshint']
 let g:syntastic_html_checkers=['tidy', 'jshint']
 "let g:syntastic_ignore_files=[".*\.py$"]
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => jedi
 """""""""""""""""""""""""""""""""""""""""""""""""
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#popup_select_first = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"==>YCM 代码自动补全
+"==>YCM 代码自动补全(statues:85%)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"重启 :YcmRestartServer
 let g:ycm_disable_for_files_larger_than_kb = 1024
 let g:ycm_confirm_extra_conf=0 " 关闭加载.ycm_extra_conf.py提示
 let g:ycm_complete_in_comments = 1 "注释输入补全
@@ -363,12 +417,14 @@ let g:ycm_filetype_blacklist = {
 \ 'tagbar' : 1,
 \ 'gitcommit' : 1,
 \}
-" let g:ycm_key_list_select_completion=['<c-n>']
-" let g:ycm_key_list_select_completion = ['<Down>']
-" let g:ycm_key_list_previous_completion=['<c-p>']
-" let g:ycm_key_list_previous_completion = ['<Up>']
+" 跳转到定义处, 分屏打开
+let g:ycm_goto_buffer_command = 'horizontal-split'
+" nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gd :YcmCompleter 	<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"==>设置airline状态栏
+"==>设置airline状态栏(statues:95%)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set laststatus=2
 "let g:airline_enable_branch = 1
 "let g:airline_extensions_syntastic = 1
@@ -380,6 +436,9 @@ let g:airline_left_sep = '»'
 let g:airline_right_sep = '«'
 let g:airline_left_alt_sep = '❯'
 let g:airline_right_alt_sep = '❮'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
 "let g:airline_left_sep = '▶'
 "let g:airline_right_sep = '◀'
 "let g:airline_symbols.linenr = '␊'
@@ -395,6 +454,7 @@ let termencoding=&encoding
 set fileencodings=utf-8,gbk,ucs-bom,cp936
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "nerdcommenter 快速注释
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map cc <leader>c<space>
 let NERDShutUp=1
 let NERDSpaceDelims=1 " 让注释符与语句之间留一个空格
@@ -403,17 +463,19 @@ let NERD_c_alt_style=1
 let NERD_cpp_alt_style=1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "==>ctrlp 文件搜索
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " " let g:ctrlp_map = '<leader>p'
 " " let g:ctrlp_cmd = 'CtrlP'
 " " map <leader>f :CtrlPMRU<CR>
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip " MacOSX/Linux"
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif " MacOSX/Linux"
 let g:ctrlp_custom_ignore = {
 \ 'dir': '\v[\/]\.(git|hg|svn|rvm)$',
 \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz)$',
 \ }
 "\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+let g:ctrlp_extensions = ['funky']
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_match_window_bottom=1
-let g:ctrlp_max_height=15
+let g:ctrlp_max_height=10
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
