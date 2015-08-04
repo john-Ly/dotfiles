@@ -209,7 +209,6 @@ autocmd BufNewFile * normal G
 " Python 文件的一般设置，比如不要 tab 等
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-expandtab ai
 
 " 保存python文件时删除多余空格
 "fun! <SID>StripTrailingWhitespaces()
@@ -342,16 +341,16 @@ Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
 Bundle 'taglist.vim'
 Bundle 'ctags.vim'
-"Bundle "davidhalter/jedi"
+"Bundle 'davidhalter/jedi'
 "Bundle 'mark.vim'
 Bundle "mattn/emmet-vim"
-Bundle 'docunext/closetag.vim'    " 自动补全html/xml标签
+Bundle 'docunext/closetag.vim'  
 let g:closetag_html_style=1
 Bundle 'scrooloose/nerdcommenter'
 let g:NERDSpaceDelims=1
-Bundle 'kevinw/pyflakes-vim'     " 弥补syntastic只能打开和保存才检查语法的不足
+Bundle 'kevinw/pyflakes-vim'   
 let g:pyflakes_use_quickfix = 0 
-Bundle 'hdima/python-syntax'     " for python.vim syntax highlight
+Bundle 'hdima/python-syntax'   
 " :Python2Syntax   or  :Python3Syntax(default)
 let python_highlight_all = 1
 "c) 指定非Github的Git仓库的插件，需要使用git地址
