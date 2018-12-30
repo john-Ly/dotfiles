@@ -1,24 +1,26 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 1 vim支持c/c++ python（目前在学习这两种语言）
-" 2 vimrc不能直接使用----ycm需要编译才可以使用，在安装syntactic
-" 3 需要不断维护更新
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 第三次更新：2015-08-04 
+" 1 支持c/c++
 " 主要插件学习 文件工程学习
 " 折叠功能的实验 快捷键为 ，zz
 " undo && redo ---- shortcut: u cltr+R
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 修改leader键
 let mapleader = ','
 let g:mapleader = ','
+
 if v:progname =~? "evim"
 finish
 endif
+
 if has('mouse')
 set mouse=a
 endif
+
 set nocompatible
 set backspace=eol,start,indent
 syntax enable
@@ -37,16 +39,16 @@ set magic
 
 " 现在使用主题为zenburn 
 " molokai
-"colorscheme molokai
-"let g:molokai_original = 1
+colorscheme molokai
+let g:molokai_original = 1
 " solarized
-"set background=dark
+" set background=dark
 "colorscheme solarized
 set cursorcolumn
 set cursorline
 "desert
 set t_Co=256
-colorscheme zenburn
+" colorscheme zenburn
 
 " 取消换行。
 set nowrap
@@ -180,7 +182,8 @@ functio! SetTitle()
 		call append(line("."), "	> File Name: ".expand("%")) 
 		call append(line(".")+1, "	> Author: jekor") 
 		call append(line(".")+2, "	> Mail: hike2048 AT 163 DOT com") 
-		call append(line(".")+3, "	> Created Time: ".strftime("%c")) 
+		" call append(line(".")+3, "	> Created Time: ".strftime("%c")) 
+        call append(line(".")+3, "	> Created Time: ".strftime("%d/%m/%y\ -\ %H:%M")) 
 		call append(line(".")+4, " ************************************************************************/") 
 		call append(line(".")+5, "")
 	endif
@@ -269,7 +272,7 @@ map <C-l> <C-W>l
 
 "快速编辑vimrc  编辑vimrc ,ee ;; 加载vimrc ,ss
 "Set mapleader
-let mapleader = ","
+"let mapleader = ","
 "Fast reloading of the .vimrc
 map <silent> <leader>ss :source ~/.vimrc<cr>
 "Fast editing of .vimrc
@@ -280,7 +283,7 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 " 命令行模式增强，ctrl - a到行首， -e 到行尾
 "cnoremap <C-a> <Home>
 "cnoremap <C-e> <End>
- 
+
 " remap U to <C-r> for easier redo
 "nnoremap U <C-r>
 
@@ -319,79 +322,41 @@ func! CompileRun()
         exec "!time ruby %"
     endif
 endfunc
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Vim插件管理——BundleInstall/BundleList/BundleClean
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible " be iMproved
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-"let Vundle manage Vundle
-Bundle 'gmarik/vundle'
-"可以通过以下3种方式指定插件的来源
-"a)指定Github中vim-scripts仓库中的插件，直接指定插件名称即可，插件明中的空格使用“-”代替。
-Bundle 'L9'
-"b)指定Github中其他用户仓库的插件，使用“用户名/插件名称”的方式指定
-Bundle 'tpope/vim-fugitive'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'tpope/vim-rails.git'
-Bundle 'bling/vim-airline'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/syntastic'
-Bundle 'kien/ctrlp.vim'
-Bundle 'taglist.vim'
-Bundle 'ctags.vim'
-"Bundle 'davidhalter/jedi'
-"Bundle 'mark.vim'
-Bundle "mattn/emmet-vim"
-Bundle 'docunext/closetag.vim'  
-let g:closetag_html_style=1
-Bundle 'scrooloose/nerdcommenter'
-let g:NERDSpaceDelims=1
-Bundle 'kevinw/pyflakes-vim'   
-let g:pyflakes_use_quickfix = 0 
-Bundle 'hdima/python-syntax'   
-" :Python2Syntax   or  :Python3Syntax(default)
-let python_highlight_all = 1
-"c) 指定非Github的Git仓库的插件，需要使用git地址
-Bundle 'git://git.wincent.com/command-t.git'
-"d) 指定本地Git仓库中的插件
-"Bundle 'file:///Users/gmarik/path/to/plugin'
-filetype plugin indent on " required!
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"==>syntastic
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_loc_list_height = 3
-let g:syntastic_check_on_wq = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_cpp_include_dirs = ['/usr/include/']
-let g:syntastic_cpp_remove_include_errors = 1
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_compiler = 'clang++'
-"set error or warning signs
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-"let g:syntastic_error_symbol = '><'
-"let g:syntastic_warning_symbol = '>!'
-"whether to show balloons
-let g:syntastic_enable_balloons = 1
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
-let g:syntastic_python_checkers=['pyflakes'] " 使用pyflakes,速度比pylint快
-let g:syntastic_javascript_checkers = ['jsl', 'jshint']
-let g:syntastic_html_checkers=['tidy', 'jshint']
-"let g:syntastic_ignore_files=[".*\.py$"]
+
+let $BUNDLE = expand("$HOME/.vim/bundle")
+let $PLUG_DIR = expand("$BUNDLE/vim-plug")
+
+if empty(glob(expand("$PLUG_DIR/plug.vim")))
+  silent !curl -fLo $PLUG_DIR/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source ~/.vimrc
+endif
+source $PLUG_DIR/plug.vim
+
+call plug#begin('~/.vim/bundle')
+Plug 'tpope/vim-fugitive'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'bling/vim-airline'
+Plug 'Valloric/YouCompleteMe'
+Plug 'w0rp/ale'
+Plug 'kien/ctrlp.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'skywind3000/quickmenu.vim'
+call plug#end()
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""
-" => jedi
-"""""""""""""""""""""""""""""""""""""""""""""""""
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#popup_select_first = 0
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "==>YCM 代码自动补全(statues:85%)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "重启 :YcmRestartServer
+"" using system default python3 cause conflict with conda
+" @see https://github.com/Valloric/YouCompleteMe/issues/1241#issuecomment-335051278
+let g:ycm_path_to_python_interpreter = "/usr/bin/python"
+
 let g:ycm_disable_for_files_larger_than_kb = 1024
 let g:ycm_confirm_extra_conf=0 " 关闭加载.ycm_extra_conf.py提示
 let g:ycm_complete_in_comments = 1 "注释输入补全
@@ -402,7 +367,7 @@ let g:ycm_seed_identifiers_with_syntax=1 "语言关键字补全, 不过python关
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_min_num_of_chars_for_completion=2 " 从第2个键入字符就开始罗列匹配项
 
-" 引入，可以补全系统，以及python的第三方包 针对新老版本YCM做了兼容
+" 引入，可以补全系统，以及python的第三方包 针对新老版本Y什么情况啊 YCM做了兼容
 " old version
 if !empty(glob("~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py"))
 let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py"
@@ -421,6 +386,33 @@ let g:ycm_goto_buffer_command = 'horizontal-split'
 " nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>gd :YcmCompleter 	<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"==>设置ale
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ale_linters_explicit = 1
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+
+let g:ale_sign_error = "\ue009\ue009"
+hi! clear SpellBad
+hi! clear SpellCap
+hi! clear SpellRare
+hi! SpellBad gui=undercurl guisp=red
+hi! SpellCap gui=undercurl guisp=blue
+hi! SpellRare gui=undercurl guisp=magenta
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "==>设置airline状态栏(statues:95%)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -451,30 +443,3 @@ endif
 "set enc=utf-8
 let termencoding=&encoding
 set fileencodings=utf-8,gbk,ucs-bom,cp936
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"nerdcommenter 快速注释
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map cc <leader>c<space>
-let NERDShutUp=1
-let NERDSpaceDelims=1 " 让注释符与语句之间留一个空格
-let NERDCompactSexyComs=1 " 多行注释时样子更好看
-let NERD_c_alt_style=1
-let NERD_cpp_alt_style=1
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"==>ctrlp 文件搜索
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" " let g:ctrlp_map = '<leader>p'
-" " let g:ctrlp_cmd = 'CtrlP'
-" " map <leader>f :CtrlPMRU<CR>
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif " MacOSX/Linux"
-let g:ctrlp_custom_ignore = {
-\ 'dir': '\v[\/]\.(git|hg|svn|rvm)$',
-\ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz)$',
-\ }
-"\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-let g:ctrlp_extensions = ['funky']
-let g:ctrlp_working_path_mode=0
-let g:ctrlp_match_window_bottom=1
-let g:ctrlp_max_height=10
-let g:ctrlp_match_window_reversed=0
-let g:ctrlp_mruf_max=500
